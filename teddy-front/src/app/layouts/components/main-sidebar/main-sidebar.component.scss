@@ -1,0 +1,31 @@
+@import "../../../../shared/variables";
+.sidenav-content {
+    height: 70vh;;
+  }
+  
+  mat-list-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 10px;
+    padding: 12px;
+    padding-left: 36px;
+    .item{
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+    }
+    .clients{
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      color:$color-primary !important;
+      svg{
+        color:$color-primary !important;
+
+      }
+    }
+  }
+  
+
+  

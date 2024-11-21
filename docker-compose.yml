@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: teddy_postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clients_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build:
+      context: ./teddy-back/
+      dockerfile: Dockerfile
+    container_name: teddy_backend
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: clients_db
+      FRONTEND_URL: http://localhost:4200/
+    depends_on:
+      - postgres
+    restart: always
+    command: sh -c "npm run migration:run && npm run start:prod"
+
+  frontend:
+    build:
+      context: ./teddy-front/
+      dockerfile: Dockerfile
+    container_name: teddy_frontend
+    ports:
+      - '4200:4200' 
+    volumes:
+      - ./teddy-front:/usr/src/app  
+    restart: always
+    command: ng serve --host 0.0.0.0
+
+volumes:
+  postgres_data:
